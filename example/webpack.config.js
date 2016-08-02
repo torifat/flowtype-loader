@@ -8,6 +8,9 @@ module.exports = {
 	module: {
 		preLoaders: [
 			{ test: /\.js$/, loader: path.join(__dirname, '..') }
-		]
+		],
+		loaders: [
+	    { test: /\.js$/, loader: 'babel' }
+	  ]
 	}
 };

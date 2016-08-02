@@ -10,11 +10,26 @@
     "type": "git",
     "url": "git+https://github.com/torifat/flowtype-loader.git"
   },
-  "keywords": ["webpack", "flow"],
+  "keywords": [
+    "webpack",
+    "flow"
+  ],
   "author": "Rifat Nabi",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/torifat/flowtype-loader/issues"
   },
-  "homepage": "https://github.com/torifat/flowtype-loader#readme"
+  "homepage": "https://github.com/torifat/flowtype-loader#readme",
+  "files": [
+    "index.js"
+  ],
+  "peerDependencies": {
+    "webpack": "1 || ^2.1.0-beta"
+  },
+  "devDependencies": {
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
+    "webpack": "^1.13.1"
+  }
 }
