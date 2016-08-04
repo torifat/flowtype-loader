@@ -32,3 +32,4 @@ module.exports = {
 ## TODO
 
 - [ ] Fix performance issue (parse flow output once)
+- [ ] Add option `failOnError`

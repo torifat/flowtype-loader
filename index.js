@@ -1,5 +1,3 @@
-var fs = require('fs');
-var path = require('path');
 var execFile = require('child_process').execFile;
 var flow = require('flow-bin');
 var prettyPrintError = require('./lib/flowResult').prettyPrintError;
@@ -16,20 +14,23 @@ module.exports = function (source) {
   },
   function (err, res) {
     if (err) {
-      try {
-        var json = JSON.parse(res);
-        if (!json.passed) {
-          json.errors
-            .filter(function (error) {
-              var mainLoc = mainLocOfError(error);
-              var mainFile = mainLoc && mainLoc.source;
-              return mainFile === loader.resourcePath;
-            })
-            .map(prettyPrintError)
-            .map(loader.emitError);
+      // No .flowconfig found
+      if (err.code !==  12) {
+        try {
+          var json = JSON.parse(res);
+          if (!json.passed) {
+            json.errors
+              .filter(function (error) {
+                var mainLoc = mainLocOfError(error);
+                var mainFile = mainLoc && mainLoc.source;
+                return mainFile === loader.resourcePath;
+              })
+              .map(prettyPrintError)
+              .map(loader.emitError);
+          }
+        } catch (e) {
+          throw e;
         }
-      } catch (e) {
-        throw e;
       }
     }
     callback(null, source);
