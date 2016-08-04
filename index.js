@@ -7,7 +7,7 @@ module.exports = function (source) {
   var loader = this;
   // http://webpack.github.io/docs/how-to-write-a-loader.html#flag-itself-cacheable-if-possible
   this.cacheable && this.cacheable();
-	var callback = this.async();
+  var callback = this.async();
 
   execFile(flow, ['status', '--json'], {
     cwd: loader.context
