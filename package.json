@@ -1,6 +1,6 @@
 {
   "name": "flowtype-loader",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Flow loader for webpack",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "keywords": [
     "webpack",
-    "flow"
+    "flow",
+    "loader"
   ],
   "author": "Rifat Nabi",
   "license": "MIT",
@@ -21,7 +22,8 @@
   },
   "homepage": "https://github.com/torifat/flowtype-loader#readme",
   "files": [
-    "index.js"
+    "index.js",
+    "lib"
   ],
   "peerDependencies": {
     "webpack": "1 || ^2.1.0-beta"
@@ -30,6 +32,7 @@
     "babel-core": "^6.11.4",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-flow-strip-types": "^6.8.0",
+    "flow-bin": "^0.30.0",
     "webpack": "^1.13.1"
   }
 }
