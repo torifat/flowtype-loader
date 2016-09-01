@@ -1,4 +1,6 @@
 var path = require('path');
+var FlowtypePlugin = require('../plugin');
+
 module.exports = {
 	entry: './entry.js',
 	output: {
@@ -12,5 +14,8 @@ module.exports = {
 		loaders: [
 	    { test: /\.js$/, loader: 'babel' }
 	  ]
-	}
+	},
+	plugins: [
+		new FlowtypePlugin()
+	]
 };
