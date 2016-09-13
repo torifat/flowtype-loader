@@ -8,10 +8,15 @@ module.exports = function (source) {
   }
 
   var callback = this.async();
-  this.flowtypeCheck(this.resourcePath, function (errors) {
+  this.flowtypeCheck(this.resourcePath, function (errors, options) {
     var flowErrors = errors.map(prettyPrintError);
     if (flowErrors.length > 0) {
       flowErrors.map(this.emitError);
+      if (options.failOnError) {
+        throw new Error('Module failed because of a Flow error.\n'
+          + flowErrors.join('\n'));
+      }
+
     }
     callback(null, source);
   }.bind(this));

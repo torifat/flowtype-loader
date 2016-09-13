@@ -2,7 +2,10 @@ var flowStatus = require('./lib/flowStatus');
 var mainLocOfError = require('./lib/flowResult').mainLocOfError;
 
 function FlowtypePlugin(options) {
-  this._options = options || {cwd: process.cwd()};
+  this._options = options || {};
+  if (!this._options.cwd) {
+    this._options.cwd = process.cwd();
+  }
   this._resources = [];
   this._isFlowRunning = false;
   this._flowStatus = null;
@@ -53,7 +56,7 @@ FlowtypePlugin.prototype._notifyResourceError = function(resource) {
         return mainFile === resource.path;
       });
     }
-    resource.callback(errors);
+    resource.callback(errors, this._options);
   }
 };
 
