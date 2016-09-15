@@ -1,38 +1,23 @@
-var execFile = require('child_process').execFile;
-var flow = require('flow-bin');
 var prettyPrintError = require('./lib/flowResult').prettyPrintError;
-var mainLocOfError = require('./lib/flowResult').mainLocOfError;
 
 module.exports = function (source) {
-  var loader = this;
-  // http://webpack.github.io/docs/how-to-write-a-loader.html#flag-itself-cacheable-if-possible
-  this.cacheable && this.cacheable();
-  var callback = this.async();
+  this.cacheable();
 
-  execFile(flow, ['status', '--json'], {
-    cwd: loader.context
-  },
-  function (err, res) {
-    if (err) {
-      // No .flowconfig found
-      if (err.code !==  12) {
-        try {
-          var json = JSON.parse(res);
-          if (!json.passed) {
-            json.errors
-              .filter(function (error) {
-                var mainLoc = mainLocOfError(error);
-                var mainFile = mainLoc && mainLoc.source;
-                return mainFile === loader.resourcePath;
-              })
-              .map(prettyPrintError)
-              .map(loader.emitError);
-          }
-        } catch (e) {
-          throw e;
-        }
+  if (typeof (this.flowtypeCheck) !== 'function') {
+    throw new Error('You need to configure FlowtypePlugin');
+  }
+
+  var callback = this.async();
+  this.flowtypeCheck(this.resourcePath, function (errors, options) {
+    var flowErrors = errors.map(prettyPrintError);
+    if (flowErrors.length > 0) {
+      flowErrors.map(this.emitError);
+      if (options.failOnError) {
+        throw new Error('Module failed because of a Flow error.\n'
+          + flowErrors.join('\n'));
       }
+
     }
     callback(null, source);
-  });
+  }.bind(this));
 };

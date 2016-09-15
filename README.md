@@ -18,18 +18,20 @@ $ npm i -D flowtype-loader
 In your webpack configuration
 
 ```js
+var FlowtypePlugin = require('flowtype-loader/plugin');
+
 module.exports = {
   // ...
   module: {
     preLoaders: [
       {test: /\.js$/, loader: "flowtype", exclude: /node_modules/}
     ]
-  }
+  },
+  plugins: [
+    new FlowtypePlugin()
+    // new FlowtypePlugin({cwd: '/path/'})
+    // new FlowtypePlugin({failOnError: true})
+  ]
   // ...
 }
 ```
-
-## TODO
-
-- [ ] Fix performance issue (parse flow output once)
-- [ ] Add option `failOnError`
