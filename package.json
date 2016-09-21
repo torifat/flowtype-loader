@@ -23,6 +23,7 @@
   "homepage": "https://github.com/torifat/flowtype-loader#readme",
   "files": [
     "index.js",
+    "plugin.js",
     "lib"
   ],
   "peerDependencies": {
