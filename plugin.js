@@ -1,5 +1,4 @@
 var flowStatus = require('./lib/flowStatus');
-var mainLocOfError = require('./lib/flowResult').mainLocOfError;
 
 function FlowtypePlugin(options) {
   this._options = options || {};
@@ -50,11 +49,7 @@ FlowtypePlugin.prototype._notifyResourceError = function(resource) {
   if (resource.callback) {
     var errors = [];
     if (this._flowStatus && !this._flowStatus.passed) {
-      errors = this._flowStatus.errors.filter(function (error) {
-        var mainLoc = mainLocOfError(error);
-        var mainFile = mainLoc && mainLoc.source;
-        return mainFile === resource.path;
-      });
+      errors = this._flowStatus.errors
     }
     resource.callback(errors, this._options);
   }
