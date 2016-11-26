@@ -1,5 +1,4 @@
 var flowStatus = require('./lib/flowStatus');
-var mainLocOfError = require('./lib/flowResult').mainLocOfError;
 
 function FlowtypePlugin(options) {
   this._options = options || {};
