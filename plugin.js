@@ -1,72 +1,21 @@
-var flowStatus = require('./lib/flowStatus');
+const flowCheckConetent = require('./lib/flowCheckContent');
+const prettyPrintError = require('./lib/flowResult').prettyPrintError;
 
 function FlowtypePlugin(options) {
   this._options = options || {};
-  if (!this._options.cwd) {
-    this._options.cwd = process.cwd();
-  }
-  this._resources = [];
-  this._isFlowRunning = false;
-  this._flowStatus = null;
 }
 
-FlowtypePlugin.prototype.getFlowStatus = function () {
-  if (this._isFlowRunning) {
-    return true;
-  }
-
-  this._isFlowRunning = true;
-
-  flowStatus(this._options.cwd, function (status) {
-    this._flowStatus = status;
-    this._isFlowRunning = false;
-    this._notifyResources();
-  }.bind(this));
-};
-
-FlowtypePlugin.prototype.addResource = function (resourcePath, callback) {
-  var resource = {path: resourcePath, callback: callback};
-  if (this._isFlowRunning) {
-    this._resources.push(resource);
-  } else {
-    this._notifyResourceError(resource);
-  }
-};
-
-FlowtypePlugin.prototype.clearResources = function () {
-  this._resources = [];
-};
-
-FlowtypePlugin.prototype._notifyResources = function () {
-  for (var i = 0; i < this._resources.length; i++) {
-    var resource = this._resources[i];
-    this._notifyResourceError(resource);
-  }
-  this.clearResources();
-};
-
-FlowtypePlugin.prototype._notifyResourceError = function(resource) {
-  if (resource.callback) {
-    var errors = [];
-    if (this._flowStatus && !this._flowStatus.passed) {
-      errors = this._flowStatus.errors
-    }
-    resource.callback(errors, this._options);
-  }
-};
-
 FlowtypePlugin.prototype.apply = function (compiler) {
-  var plugin = this;
-
-  compiler.plugin('compile', function () {
-    plugin.clearResources();
-    plugin.getFlowStatus();
-  });
+  const plugin = this;
 
   compiler.plugin('compilation', function (compilation) {
     compilation.plugin('normal-module-loader', function (context, module) {
-      context.flowtypeCheck = function(resourcePath, callback) {
-        plugin.addResource(resourcePath, callback);
+      context.flowtypeLoaderCheckOptions = plugin._options;
+      context.flowtypeLoaderCheckContent = function(content, path, callback) {
+        flowCheckConetent(content, path, function(result) {
+          const errors = result.errors.map(prettyPrintError);
+          callback(errors);
+        })
       };
     });
   });
