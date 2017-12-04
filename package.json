@@ -3,7 +3,9 @@
   "version": "0.2.2",
   "description": "Flow loader for webpack",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "cd example; ../node_modules/.bin/webpack"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/torifat/flowtype-loader.git"

@@ -1,23 +1,29 @@
-var prettyPrintError = require('./lib/flowResult').prettyPrintError;
+const util = require('util')
 
 module.exports = function (source) {
   this.cacheable();
 
-  if (typeof (this.flowtypeCheck) !== 'function') {
-    throw new Error('You need to configure FlowtypePlugin');
+  const options = this.flowtypeLoaderCheckOptions;
+  const checkAll = options && options.checkAll;
+  const failOnError = options && options.failOnError;
+  const callback = this.async();
+
+  if (!checkAll) {
+    const flowAnnotation = source.slice(0, 8);
+    if (flowAnnotation !== '/* @flow' &&  flowAnnotation !== '// @flow') {
+      callback(null, source);
+      return;
+    }
   }
 
-  var callback = this.async();
-  this.flowtypeCheck(this.resourcePath, function (errors, options) {
-    var flowErrors = errors.map(prettyPrintError);
-    if (flowErrors.length > 0) {
-      flowErrors.map(this.emitError);
-      if (options.failOnError) {
-        throw new Error('Module failed because of a Flow error.\n'
-          + flowErrors.join('\n'));
+  this.flowtypeLoaderCheckContent(source, this.resourcePath, function (errors, options) {
+    if (errors.length > 0) {
+      errors.map(this.emitError);
+      if (failOnError) {
+        throw new Error('Module failed because of a Flow error.\n' + errors.join('\n'));
       }
-
     }
+
     callback(null, source);
   }.bind(this));
 };

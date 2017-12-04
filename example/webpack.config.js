@@ -16,6 +16,6 @@ module.exports = {
 	  ]
 	},
 	plugins: [
-		new FlowtypePlugin()
+		new FlowtypePlugin({failOnError: true, checkAll: true})
 	]
 };

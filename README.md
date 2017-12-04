@@ -30,7 +30,7 @@ module.exports = {
   },
   plugins: [
     new FlowtypePlugin()
-    // new FlowtypePlugin({cwd: '/path/'})
+    // new FlowtypePlugin({checkAll: true})
     // new FlowtypePlugin({failOnError: true})
   ]
   // ...
@@ -51,7 +51,7 @@ module.exports = {
   },
   plugins: [
     new FlowtypePlugin()
-    // new FlowtypePlugin({cwd: '/path/'})
+    // new FlowtypePlugin({checkAll: true})
     // new FlowtypePlugin({failOnError: true})
   ]
   // ...
