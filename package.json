@@ -24,9 +24,6 @@
     "plugin.js",
     "lib"
   ],
-  "peerDependencies": {
-    "webpack": "1 || 2 || 3"
-  },
   "devDependencies": {
     "babel-core": "^6.11.4",
     "babel-loader": "^6.2.4",
